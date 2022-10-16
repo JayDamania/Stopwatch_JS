@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stopwatch</title>
+  </head>
+  <body>
+    <container>
+      <div class="btn">
+        <button
+          id="startTimer"
+          onclick="startTimer()"
+          style="height: 50px; width: 200px"
+        >
+          Start
+        </button>
+        <button
+          id="reset"
+          onclick="resetTimer()"
+          style="height: 50px; width: 200px"
+        >
+          Reset
+        </button>
+      </div>
+
+      <div id="timer" style="font-size: 100px">00:00</div>
+    </container>
+    <script>
+      /*Create a Stopwatch*/
+      class Timer {
+        constructor({
+          seconds,
+          minutes,
+          timerSeconds,
+          timerMinutes,
+          interval,
+          counter,
+        }) {
+          this.seconds = seconds;
+          this.minutes = minutes;
+          this.timerSeconds = timerSeconds;
+          this.timerMinutes = timerMinutes;
+          this.interval = interval;
+          this.counter = counter;
+        }
+
+        runTimer() {
+          this.seconds++;
+
+          //condition if seconds =60 then add minutes by one
+          if (this.seconds / 60 === 1) {
+            this.seconds = 0;
+            this.minutes++;
+          }
+
+          //adding 0 to value for seconds
+          if (this.seconds < 10) {
+            this.timerSeconds = "0" + this.seconds.toString();
+          } else {
+            this.timerSeconds = this.seconds;
+          }
+
+          //adding 0 to value for minutes
+
+          if (this.minutes < 10) {
+            this.timerMinutes = "0" + this.minutes.toString();
+          } else {
+            this.timerMinutes = this.minutes;
+          }
+
+          document.getElementById("timer").innerHTML =
+            this.timerMinutes + ":" + this.timerSeconds;
+        }
+
+        startTimer() {
+          if (this.counter === false) {
+            this.interval = window.setInterval(() => this.runTimer(), 1000);
+            document.getElementById("startTimer").innerHTML = "Stop";
+            this.counter = true;
+          } else {
+            window.clearInterval(this.interval);
+            document.getElementById("startTimer").innerHTML = "Start";
+            this.counter = false;
+          }
+        }
+        resetTimer() {
+          window.clearInterval(this.interval);
+          this.seconds = 0;
+          this.minutes = 0;
+          document.getElementById("timer").innerHTML = "00:00";
+          document.getElementById("startTimer").innerHTML = "Start";
+        }
+      }
+
+      const timer = new Timer({
+        seconds: 0,
+        minutes: 0,
+        timerSeconds: 0,
+        timerMinutes: 0,
+        interval: null,
+        counter: false,
+      });
+
+      startTimer = () => timer.startTimer();
+
+      resetTimer = () => timer.resetTimer();
+    </script>
+  </body>
+</html>
